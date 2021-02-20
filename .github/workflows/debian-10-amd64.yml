@@ -1,0 +1,33 @@
+name: Debian 10 AMD64
+
+on:
+  push:
+    paths:
+      - "templates/debian-10-amd64.pkr.hcl"
+    branches:
+      - main
+
+env:
+  IMAGE_REGISTRY: ghcr.io
+  IMAGE_DISTRIBUTION: groovecommunity
+  IMAGE_NAME: packer
+  IMAGE_TAGS: latest unstable
+
+jobs:
+
+  validate_packer_template:
+
+      name: Validate Packer template
+      runs-on: ubuntu-20.04
+      
+      steps:
+
+        - name: Check out the reposiotry
+          uses: actions/checkout@v2
+          
+        - name: Validate with Packer
+          id: packer_validate
+          uses: docker://ghcr.io/groovecommunity/packer:unstable
+          timeout-minutes: 30
+          with:
+            args: packer validate -syntax-only "templates/debian-10-amd64.pkr.hcl"
