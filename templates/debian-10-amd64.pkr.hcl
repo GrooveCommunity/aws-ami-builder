@@ -45,7 +45,5 @@ source "amazon-ebs" "ebs" {
 
 build {
   sources = ["source.amazon-ebs.ebs"]
-
-
 }
 
