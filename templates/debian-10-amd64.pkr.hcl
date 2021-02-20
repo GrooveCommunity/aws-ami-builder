@@ -11,8 +11,8 @@ variable "region" {
 locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
 
 source "amazon-ebs" "ebs" {
-  ami_name      = "packer ${local.timestamp}"
-  instance_type = "t2.micro"
+  ami_name      = "packer-${var.ami_name}"
+  instance_type = "t3.micro"
   region        = var.region
 
   # https://wiki.debian.org/Cloud/AmazonEC2Image/Buster
@@ -26,16 +26,16 @@ source "amazon-ebs" "ebs" {
     owners      = ["136693071363"]
   }
 
-  ssh_interface = "private_ip"
+  ssh_interface = "public_ip"
   ssh_username  = "admin"
   ssh_port      = 22
   communicator  = "ssh"
 
   tags = {
     os_version    = "Debian"
-    Release       = "Latest"
-    Base_AMI_Name = "{{ .SourceAMIName }}"
-    Extra         = "{{ .SourceAMITags.TagName }}"
+    release       = "Latest"
+    nase_ami_name = "{{ .SourceAMIName }}"
+    extra         = "{{ .SourceAMITags.TagName }}"
   }
 
   metadata_options {
