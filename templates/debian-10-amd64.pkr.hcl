@@ -65,21 +65,19 @@ build {
   sources = ["source.amazon-ebs.ebs"]
 
   provisioner "shell" {
-    execute_command = "{{.Vars}} sudo -E bash '{{.Path}}'"
+    execute_command = "{{.Vars}} sudo -E -H bash '{{.Path}}'"
     inline = [
       "apt-get update -y",
       "apt-get install -y python3-pip",
       "python3 --version",
       "python3 -m pip install --upgrade pip",
-      "python3 -m pip install --upgrade ansible==3.0.0",
-      # "echo 'export PATH=\"$PATH:~/.local/bin\"' >> ~/.bashrc",
-      # ". ~/.bashrc",
+      "python3 -m pip install ansible==3.0.0",
       "ansible-playbook --version",
     ]
   }
 
   provisioner "ansible-local" {
-    command         = "PYTHONUNBUFFERED=1 ansible-playbook"
+    command         = "PYTHONUNBUFFERED=1 sudo -E ansible-playbook"
     playbook_dir    = "playbooks"
     playbook_files  = ["playbooks/debian-server.yml"]
     extra_arguments = ["-vv"]
