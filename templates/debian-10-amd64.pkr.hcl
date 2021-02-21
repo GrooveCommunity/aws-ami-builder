@@ -2,7 +2,7 @@ variable "source_fingerprint" {
   type = string
 }
 
-variable "artifacts_dir" {
+variable "artifact_dir" {
   type = string
 }
 
@@ -66,14 +66,14 @@ build {
 
   provisioner "ansible-local" {
     command         = "PYTHONUNBUFFERED=1 ansible-playbook"
-    playbook_dir    = "./playbooks/"
+    playbook_dir    = "./playbooks"
     playbook_files  = ["./playbooks/debian-server.yml"]
     extra_arguments = ["-vv"]
   }
 
   provisioner "file" {
     source      = "/tmp/debian-cis.log"
-    destination = "${var.artifacts_dir}/debian-cis.log"
+    destination = "${var.artifact_dir}/debian-cis.log"
     direction   = "download"
   }
 

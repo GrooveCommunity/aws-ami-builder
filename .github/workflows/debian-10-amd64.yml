@@ -12,7 +12,7 @@ env:
   IMAGE_DISTRIBUTION: groovecommunity
   IMAGE_NAME: packer
   IMAGE_TAGS: latest unstable
-  ARTIFACTS_DIR: "{{ github.workspace }}/.artifacts/"
+  ARTIFACT_DIR: "${{ github.workspace }}/.artifacts/"
 
 jobs:
 
@@ -56,7 +56,7 @@ jobs:
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
             PKR_VAR_source_fingerprint: ${{ github.sha }}
-            PKR_VAR_artifacts_dir: ${{ env.ARTIFACTS_DIR }}
+            PKR_VAR_artifact_dir: ${{ env.ARTIFACT_DIR }}
           with:
             args: packer build -color=false -on-error=abort "templates/debian-10-amd64.pkr.hcl"
 
@@ -65,4 +65,4 @@ jobs:
           with:
             name: ami-build-artifacts
             path: |
-              ${{ env.ARTIFACTS_DIR }}/**.log
+              ${{ env.ARTIFACT_DIR }}/**.log
