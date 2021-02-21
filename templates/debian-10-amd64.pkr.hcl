@@ -21,7 +21,7 @@ locals {
 }
 
 source "amazon-ebs" "ebs" {
-  ami_name      = "${var.ami_name}-${var.source_short_fingerprint}"
+  ami_name      = "${var.ami_name}-${local.source_short_fingerprint}"
   instance_type = "t3.micro"
   region        = var.region
 
