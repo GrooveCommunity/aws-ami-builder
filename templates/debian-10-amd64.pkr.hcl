@@ -70,7 +70,7 @@ build {
       "sudo apt-get install -y python3-pip",
       "python3 --version",
       "python3 -m pip install --upgrade pip",
-      "pip3 install --upgrade ansible",
+      "python3 -m pip install --user ansible",
       "ansible-playbook --version",
     ]
   }
