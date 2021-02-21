@@ -72,7 +72,7 @@ build {
       "python3 -m pip install --upgrade pip",
       "python3 -m pip install --user ansible",
       "echo 'export PATH=\"\\$PATH:~/.local/bin\"' >> ~/.profile",
-      "/bin/bash ~/.profile",
+      ". ~/.profile",
       "cat ~/.profile",
       "ls -lah ~/",
       "ls -lah ~/.local/bin",
