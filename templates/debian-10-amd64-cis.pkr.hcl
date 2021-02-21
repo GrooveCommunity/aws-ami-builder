@@ -8,7 +8,7 @@ variable "artifact_dir" {
 
 variable "ami_name" {
   type    = string
-  default = "debian-10-amd64-ami"
+  default = "debian-10-amd64-cis"
 }
 
 variable "region" {
@@ -49,6 +49,7 @@ source "amazon-ebs" "ebs" {
   communicator  = "ssh"
 
   tags = {
+    hardening          = "cis"
     os_version         = "debian"
     nase_ami_name      = "{{ .SourceAMIName }}"
     extra              = "{{ .SourceAMITags.TagName }}"
@@ -80,12 +81,15 @@ build {
     command         = "PYTHONUNBUFFERED=1 sudo -E ansible-playbook"
     playbook_dir    = "playbooks"
     playbook_files  = ["playbooks/debian-server.yml"]
-    extra_arguments = ["-vv"]
+    extra_arguments = ["-vv", "-e", "'ansible_python_interpreter=/usr/bin/python3'"]
   }
 
   provisioner "file" {
-    source      = "/tmp/debian-cis.log"
-    destination = "${var.artifact_dir}/debian-cis.log"
+    sources = [
+      "/tmp/debian-cis-apply.log",
+      "/tmp/debian-cis-audit-all.log",
+    ]
+    destination = "${var.artifact_dir}/"
     direction   = "download"
   }
 

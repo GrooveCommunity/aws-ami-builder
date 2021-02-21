@@ -17,5 +17,6 @@
     cmd: |
       cp debian/default /etc/default/cis-hardening && \
       sed -i "s#CIS_ROOT_DIR=.*#CIS_ROOT_DIR='$(pwd)'#" /etc/default/cis-hardening
-      bin/hardening.sh --audit-all >> /tmp/debian-cis.log
+      bin/hardening.sh --apply >> /tmp/debian-cis-apply.log
+      bin/hardening.sh --audit-all >> /tmp/debian-cis-audit-all.log
     chdir: "{{ tempdir_checkout.path }}"

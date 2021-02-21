@@ -1,9 +1,9 @@
-name: Debian 10 AMD64
+name: Debian 10 (Buster) amd64 CIS Hardened
 
 on:
   push:
     paths:
-      - "templates/debian-10-amd64.pkr.hcl"
+      - "templates/debian-10-amd64-cis.pkr.hcl"
       - "playbooks/debian-server.yml"
     branches:
       - main
@@ -13,7 +13,8 @@ env:
   IMAGE_DISTRIBUTION: groovecommunity
   IMAGE_NAME: packer
   IMAGE_TAGS: latest unstable
-  ARTIFACT_DIR: "${{ github.workspace }}/.artifacts/"
+  ARTIFACT_DIR: "${{ github.workspace }}/.artifacts"
+  PACKER_TEMPLATE: debian-10-amd64-cis
 
 jobs:
 
@@ -32,7 +33,7 @@ jobs:
           uses: docker://ghcr.io/groovecommunity/packer:unstable
           timeout-minutes: 10
           with:
-            args: packer validate -syntax-only "templates/debian-10-amd64.pkr.hcl"
+            args: packer validate -syntax-only "templates/${{ env.PACKER_TEMPLATE }}.pkr.hcl"
 
   build_ami:
 
@@ -59,7 +60,7 @@ jobs:
             PKR_VAR_source_fingerprint: ${{ github.sha }}
             PKR_VAR_artifact_dir: ${{ env.ARTIFACT_DIR }}
           with:
-            args: packer build -color=false -on-error=abort "templates/debian-10-amd64.pkr.hcl"
+            args: packer build -color=false -on-error=abort "templates/${{ env.PACKER_TEMPLATE }}.pkr.hcl"
 
         - name: Archive build artifacts
           uses: actions/upload-artifact@v2
@@ -67,5 +68,3 @@ jobs:
             name: ami-build-artifacts
             path: |
               ${{ env.ARTIFACT_DIR }}/**.log
-
-#  custodian_cleanup:
