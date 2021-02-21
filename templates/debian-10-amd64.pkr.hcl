@@ -71,8 +71,11 @@ build {
       "python3 --version",
       "python3 -m pip install --upgrade pip",
       "python3 -m pip install --user ansible",
-      "echo \"PATH=\\$PATH:~/.local/bin\" >> ~/.profile",
+      "echo \"export PATH=\\$PATH:~/.local/bin\" >> ~/.profile",
       "/bin/bash ~/.profile",
+      "cat ~/.profile",
+      "echo \\$PATH"
+      "which ansible",
       "ansible-playbook --version",
     ]
   }

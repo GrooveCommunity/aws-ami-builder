@@ -67,3 +67,5 @@ jobs:
             name: ami-build-artifacts
             path: |
               ${{ env.ARTIFACT_DIR }}/**.log
+
+#  custodian_cleanup:
