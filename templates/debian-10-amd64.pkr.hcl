@@ -70,17 +70,17 @@ build {
       "sudo apt-get install -y python3-pip",
       "python3 --version",
       "python3 -m pip install --upgrade pip",
-      "python3 -m pip install --user ansible",
-      "echo 'export PATH=\"$PATH:~/.local/bin\"' >> ~/.profile",
-      ". ~/.profile",
+      "python3 -m pip install --upgrade ansible",
+      # "echo 'export PATH=\"$PATH:~/.local/bin\"' >> ~/.profile",
+      # ". ~/.profile",
       "ansible-playbook --version",
     ]
   }
 
   provisioner "ansible-local" {
     command         = "PYTHONUNBUFFERED=1 ansible-playbook"
-    playbook_dir    = "./playbooks"
-    playbook_files  = ["./playbooks/debian-server.yml"]
+    playbook_dir    = "playbooks"
+    playbook_files  = ["playbooks/debian-server.yml"]
     extra_arguments = ["-vv"]
   }
 
