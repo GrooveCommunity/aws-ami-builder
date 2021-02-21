@@ -1,3 +1,11 @@
+variable "source_fingerprint" {
+  type = string
+}
+
+variable "artifacts_dir" {
+  type = string
+}
+
 variable "ami_name" {
   type    = string
   default = "debian-10-amd64-ami"
@@ -8,10 +16,12 @@ variable "region" {
   default = "us-east-1"
 }
 
-locals { timestamp = regex_replace(timestamp(), "[- TZ:]", "") }
+locals {
+  source_short_fingerprint = substr(sha256(var.source_fingerprint), 0, 16)
+}
 
 source "amazon-ebs" "ebs" {
-  ami_name      = "packer-${var.ami_name}"
+  ami_name      = "${var.ami_name}-${var.source_short_fingerprint}"
   instance_type = "t3.micro"
   region        = var.region
 
@@ -32,10 +42,10 @@ source "amazon-ebs" "ebs" {
   communicator  = "ssh"
 
   tags = {
-    os_version    = "Debian"
-    release       = "Latest"
-    nase_ami_name = "{{ .SourceAMIName }}"
-    extra         = "{{ .SourceAMITags.TagName }}"
+    os_version         = "debian"
+    nase_ami_name      = "{{ .SourceAMIName }}"
+    extra              = "{{ .SourceAMITags.TagName }}"
+    source_fingerprint = var.source_fingerprint
   }
 
   metadata_options {
@@ -44,6 +54,28 @@ source "amazon-ebs" "ebs" {
 }
 
 build {
+
   sources = ["source.amazon-ebs.ebs"]
+
+  provisioner "shell" {
+    inline = [
+      "python3 -m pip install --upgrade pip",
+      "python3 -m pip install --upgrade ansible",
+    ]
+  }
+
+  provisioner "ansible-local" {
+    command         = "PYTHONUNBUFFERED=1 ansible-playbook"
+    playbook_dir    = "../playbooks/"
+    playbook_files  = ["debian-server.yml"]
+    extra_arguments = ["-vv", "--extra-vars", "\"pizza_toppings=${var.topping}\""]
+  }
+
+  provisioner "file" {
+    source      = "/tmp/debian-cis.log"
+    destination = "${var.artifacts_dir}/debian-cis.log"
+    direction   = "download"
+  }
+
 }
 

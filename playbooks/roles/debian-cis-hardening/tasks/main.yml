@@ -1,0 +1,21 @@
+---
+- name: Create temporary checkout directory
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: checkout-debian-cis
+  register: tempdir_checkout
+
+- name: Checkout debian-cis repository
+  ansible.builtin.git:
+    repo: "https://github.com/GrooveCommunity/debian-cis"
+    dest: "{{ tempdir_checkout.path }}"
+    version: latest
+
+- name: Execute debian-cis hardening scripts
+  become: yes
+  ansible.builtin.shell:
+    cmd: |
+      cp debian/default /etc/default/cis-hardening && \
+      sed -i "s#CIS_ROOT_DIR=.*#CIS_ROOT_DIR='$(pwd)'#" /etc/default/cis-hardening
+      bin/hardening.sh --audit-all >> /tmp/debian-cis.log
+    chdir: "{{ tempdir_checkout.path }}"

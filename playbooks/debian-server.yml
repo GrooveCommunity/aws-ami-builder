@@ -1,0 +1,7 @@
+---
+- name: Configure debian generic server
+  hosts: localhost
+  gather_facts: no
+
+  roles:
+    - role: debian-cis-hardening
