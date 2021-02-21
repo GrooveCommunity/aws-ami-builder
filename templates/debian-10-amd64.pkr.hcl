@@ -68,7 +68,7 @@ build {
     execute_command = "{{.Vars}} sudo -E -H bash '{{.Path}}'"
     inline = [
       "apt-get update -y",
-      "apt-get install -y python3-pip",
+      "apt-get install -y python3-pip git",
       "python3 --version",
       "python3 -m pip install --upgrade pip",
       "python3 -m pip install ansible==3.0.0",
