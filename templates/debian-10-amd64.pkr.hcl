@@ -70,9 +70,9 @@ build {
       "sudo apt-get install -y python3-pip",
       "python3 --version",
       "python3 -m pip install --upgrade pip",
-      "python3 -m pip install --upgrade ansible",
-      # "echo 'export PATH=\"$PATH:~/.local/bin\"' >> ~/.profile",
-      # ". ~/.profile",
+      "python3 -m pip install --user ansible",
+      "echo 'export PATH=\"$PATH:~/.local/bin\"' >> ~/.bashrc",
+      ". ~/.bashrc",
       "ansible-playbook --version",
     ]
   }
