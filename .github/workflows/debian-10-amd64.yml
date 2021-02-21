@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "templates/debian-10-amd64.pkr.hcl"
+      - "playbooks/debian-server.yml"
     branches:
       - main
 
