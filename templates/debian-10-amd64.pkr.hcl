@@ -74,7 +74,9 @@ build {
       "echo \"export PATH=\\$PATH:~/.local/bin\" >> ~/.profile",
       "/bin/bash ~/.profile",
       "cat ~/.profile",
-      "echo \\$PATH",
+      "ls -lah ~/",
+      "ls -lah ~/.local/bin",
+      "echo $PATH",
       "which ansible",
       "ansible-playbook --version",
     ]
