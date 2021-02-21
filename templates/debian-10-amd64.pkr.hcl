@@ -68,7 +68,7 @@ build {
     command         = "PYTHONUNBUFFERED=1 ansible-playbook"
     playbook_dir    = "../playbooks/"
     playbook_files  = ["debian-server.yml"]
-    extra_arguments = ["-vv", "--extra-vars", "\"pizza_toppings=${var.topping}\""]
+    extra_arguments = ["-vv"]
   }
 
   provisioner "file" {
