@@ -67,7 +67,7 @@ build {
   provisioner "ansible-local" {
     command         = "PYTHONUNBUFFERED=1 ansible-playbook"
     playbook_dir    = "./playbooks/"
-    playbook_files  = ["./debian-server.yml"]
+    playbook_files  = ["./playbooks/debian-server.yml"]
     extra_arguments = ["-vv"]
   }
 
