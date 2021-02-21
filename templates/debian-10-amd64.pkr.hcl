@@ -65,14 +65,15 @@ build {
   sources = ["source.amazon-ebs.ebs"]
 
   provisioner "shell" {
+    execute_command = "{{.Vars}} sudo -E bash '{{.Path}}'"
     inline = [
-      "sudo apt-get update -y",
-      "sudo apt-get install -y python3-pip",
+      "apt-get update -y",
+      "apt-get install -y python3-pip",
       "python3 --version",
       "python3 -m pip install --upgrade pip",
-      "python3 -m pip install --user ansible",
-      "echo 'export PATH=\"$PATH:~/.local/bin\"' >> ~/.bashrc",
-      ". ~/.bashrc",
+      "python3 -m pip install --upgrade ansible==3.0.0",
+      # "echo 'export PATH=\"$PATH:~/.local/bin\"' >> ~/.bashrc",
+      # ". ~/.bashrc",
       "ansible-playbook --version",
     ]
   }
