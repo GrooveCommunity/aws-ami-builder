@@ -36,6 +36,13 @@ source "amazon-ebs" "ebs" {
     owners      = ["136693071363"]
   }
 
+  launch_block_device_mappings {
+    device_name           = "/dev/xvda"
+    volume_size           = 30
+    volume_type           = "gp2"
+    delete_on_termination = true
+  }
+
   ssh_interface = "public_ip"
   ssh_username  = "admin"
   ssh_port      = 22
@@ -63,7 +70,7 @@ build {
       "sudo apt-get install -y python3-pip",
       "python3 --version",
       "python3 -m pip install --upgrade pip",
-      "python3 -m pip install --upgrade ansible",
+      "pip3 install --upgrade ansible",
       "ansible-playbook --version",
     ]
   }
