@@ -3,7 +3,7 @@ name: Elasticsearch 7.11.1 from Debian 10 CIS amd64
 on:
   push:
     paths:
-      - "templates/elasticsearch-7-11-1-amd64.pkr.pkr.hcl"
+      - "templates/elasticsearch-7-11-1-amd64.pkr.hcl"
     branches:
       - main
 

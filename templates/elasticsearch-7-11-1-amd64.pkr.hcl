@@ -89,6 +89,7 @@ build {
       "wget https://github.com/justwatchcom/elasticsearch_exporter/releases/download/v${var.elasticsearch_exporter_version}/elasticsearch_exporter-${var.elasticsearch_exporter_version}.linux-amd64.tar.gz",
       "tar -xzf elasticsearch_exporter-${var.elasticsearch_exporter_version}.linux-amd64.tar.gz",
       "mv elasticsearch_exporter-${var.elasticsearch_exporter_version}.linux-amd64 elasticsearch-exporter",
+      # to start elasticsearch metrics endpoints
       # elasticsearch-exporter/elasticsearch_exporter --es.uri=http://localhost:9200
 
       # install plugins
