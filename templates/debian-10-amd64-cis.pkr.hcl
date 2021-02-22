@@ -16,6 +16,11 @@ variable "region" {
   default = "us-east-1"
 }
 
+variable "source_ami_owner" {
+  type    = string
+  default = "136693071363"
+}
+
 locals {
   source_short_fingerprint = substr(sha256(var.source_fingerprint), 0, 16)
 }
@@ -33,7 +38,7 @@ source "amazon-ebs" "ebs" {
       virtualization-type = "hvm"
     }
     most_recent = true
-    owners      = ["136693071363"]
+    owners      = [var.source_ami_owner]
   }
 
   launch_block_device_mappings {

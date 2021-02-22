@@ -1,16 +1,15 @@
-name: Debian 10 (Buster) amd64 CIS Hardened
+name: Elasticsearch 7.11.1 from Debian 10 CIS amd64
 
 on:
   push:
     paths:
-      - "templates/debian-10-amd64-cis.pkr.hcl"
-      - "playbooks/debian-server.yml"
+      - "templates/elasticsearch-7-11-1-amd64.pkr.pkr.hcl"
     branches:
       - main
 
 env:
   ARTIFACT_DIR: "${{ github.workspace }}/.artifacts"
-  PACKER_TEMPLATE: debian-10-amd64-cis
+  PACKER_TEMPLATE: elasticsearch-7-11-1-amd64
 
 jobs:
 
@@ -54,13 +53,5 @@ jobs:
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
             PKR_VAR_source_fingerprint: ${{ github.sha }}
-            PKR_VAR_artifact_dir: ${{ env.ARTIFACT_DIR }}
           with:
             args: packer build -color=false -on-error=abort "templates/${{ env.PACKER_TEMPLATE }}.pkr.hcl"
-
-        - name: Archive build artifacts
-          uses: actions/upload-artifact@v2
-          with:
-            name: ami-build-artifacts
-            path: |
-              ${{ env.ARTIFACT_DIR }}/**.log
