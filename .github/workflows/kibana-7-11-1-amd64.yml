@@ -1,0 +1,57 @@
+name: Kibana 7.11.1 from Debian 10 CIS amd64
+
+on:
+  push:
+    paths:
+      - "templates/kibana-7-11-1-amd64.pkr.hcl"
+    branches:
+      - main
+
+env:
+  ARTIFACT_DIR: "${{ github.workspace }}/.artifacts"
+  PACKER_TEMPLATE: kibana-7-11-1-amd64
+
+jobs:
+
+  validate_packer_template:
+
+      name: Validate Packer template
+      runs-on: ubuntu-20.04
+      
+      steps:
+
+        - name: Check out the reposiotry
+          uses: actions/checkout@v2
+          
+        - name: Packer Validate
+          id: packer_validate
+          uses: docker://ghcr.io/groovecommunity/packer:unstable
+          timeout-minutes: 10
+          with:
+            args: packer validate -syntax-only "templates/${{ env.PACKER_TEMPLATE }}.pkr.hcl"
+
+  build_ami:
+
+      name: Build AMI from Packer template
+      runs-on: ubuntu-20.04
+      environment: unstable
+
+      needs:
+        - validate_packer_template
+      
+      steps:
+
+        - name: Check out the reposiotry
+          uses: actions/checkout@v2
+          
+        - name: Packer Build
+          id: packer_build
+          uses: docker://ghcr.io/groovecommunity/packer:unstable
+          timeout-minutes: 30
+          env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+            PKR_VAR_source_fingerprint: ${{ github.sha }}
+          with:
+            args: packer build -color=false -on-error=abort "templates/${{ env.PACKER_TEMPLATE }}.pkr.hcl"
