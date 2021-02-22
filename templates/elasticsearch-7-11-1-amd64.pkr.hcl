@@ -80,13 +80,13 @@ build {
   provisioner "shell" {
     execute_command = "{{.Vars}} bash '{{.Path}}'"
     inline = [
-      "wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${var.elasticsearch_version}-linux-x86_64.tar.gz",
+      "wget --progress=dot:mega https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${var.elasticsearch_version}-linux-x86_64.tar.gz",
       "tar -xzf elasticsearch-${var.elasticsearch_version}-linux-x86_64.tar.gz",
       "mv elasticsearch-${var.elasticsearch_version} elasticsearch",
       # elasticsearch/bin/elasticsearch to execute elasticsearch
 
       # install exporter
-      "wget https://github.com/justwatchcom/elasticsearch_exporter/releases/download/v${var.elasticsearch_exporter_version}/elasticsearch_exporter-${var.elasticsearch_exporter_version}.linux-amd64.tar.gz",
+      "wget --progress=dot:mega https://github.com/justwatchcom/elasticsearch_exporter/releases/download/v${var.elasticsearch_exporter_version}/elasticsearch_exporter-${var.elasticsearch_exporter_version}.linux-amd64.tar.gz",
       "tar -xzf elasticsearch_exporter-${var.elasticsearch_exporter_version}.linux-amd64.tar.gz",
       "mv elasticsearch_exporter-${var.elasticsearch_exporter_version}.linux-amd64 elasticsearch-exporter",
       # to start elasticsearch metrics endpoints
@@ -94,7 +94,7 @@ build {
 
       # install plugins
       "cd elasticsearch",
-      "sudo bin/elasticsearch-plugin install https://artifacts.elastic.co/downloads/elasticsearch-plugins/repository-s3/repository-s3-${var.elasticsearch_version}.zip",
+      "sudo bin/elasticsearch-plugin install -b https://artifacts.elastic.co/downloads/elasticsearch-plugins/repository-s3/repository-s3-${var.elasticsearch_version}.zip",
     ]
   }
 
