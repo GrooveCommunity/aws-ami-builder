@@ -75,8 +75,8 @@ build {
     execute_command = "{{.Vars}} bash '{{.Path}}'"
     inline = [
       "wget --progress=dot:mega  https://artifacts.elastic.co/downloads/logstash/logstash-oss-${var.logstash_version}-linux-x86_64.tar.gz",
-      "tar -xzf logstash-oss-${var.logstash_version}-linux-x86_64.tar.gz",
-      "mv logstash-oss-${var.logstash_version} logstash",
+      "tar -xvzf logstash-oss-${var.logstash_version}-linux-x86_64.tar.gz",
+      "mv logstash-oss-${var.logstash_version}-linux-x86_64 logstash",
       # logstash/bin/logstash to execute logstash
     ]
   }

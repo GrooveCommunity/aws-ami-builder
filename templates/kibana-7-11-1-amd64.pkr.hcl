@@ -75,8 +75,8 @@ build {
     execute_command = "{{.Vars}} bash '{{.Path}}'"
     inline = [
       "wget --progress=dot:mega https://artifacts.elastic.co/downloads/kibana/kibana-${var.kibana_version}-linux-x86_64.tar.gz",
-      "tar -xzf kibana-${var.kibana_version}-linux-x86_64.tar.gz",
-      "mv kibana-${var.kibana_version} kibana",
+      "tar -xvzf kibana-${var.kibana_version}-linux-x86_64.tar.gz",
+      "mv kibana-${var.kibana_version}-linux-x86_64 kibana",
       # kibana/bin/kibana to execute kibana
     ]
   }
